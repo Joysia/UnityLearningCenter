@@ -27,11 +27,27 @@ public class PlayerController : MonoBehaviour {
     public Rigidbody rd;
     public Vector3 movement;
     public Boundary boundary;
+
+    public GameObject shot;
+    public Transform shotSpawn;
+
+    public float fireRate;
+    private float nextFire;
     
     void start()
     {
         rd = this.GetComponent<Rigidbody>();
         //boundary = new Boundary();
+    }
+
+    void Update()
+    {
+        if (Input.GetButton("Fire1") && Time.time > nextFire)           // "Fire1" == Ctrl 키
+        {
+            nextFire = Time.time + fireRate;
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+        }
+        
     }
 
     void FixedUpdate()

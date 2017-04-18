@@ -111,7 +111,7 @@ MonoBehaviour:
   m_MinSize: {x: 1021, y: 442}
   m_MaxSize: {x: 26016, y: 10021}
   vertical: 0
-  controlID: 21
+  controlID: 70
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_MinSize: {x: 306, y: 442}
   m_MaxSize: {x: 8006, y: 8042}
   vertical: 1
-  controlID: 22
+  controlID: 71
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_MinSize: {x: 306, y: 221}
   m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 48
+  controlID: 72
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -252,7 +252,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 1179
     y: 0
-    width: 204
+    width: 207
     height: 958
   m_MinSize: {x: 204, y: 221}
   m_MaxSize: {x: 4004, y: 4021}
@@ -275,9 +275,9 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1383
+    x: 1386
     y: 0
-    width: 260
+    width: 257
     height: 958
   m_MinSize: {x: 234, y: 271}
   m_MaxSize: {x: 10004, y: 10021}
@@ -414,14 +414,14 @@ MonoBehaviour:
     width: 1177
     height: 471
   m_SceneLighting: 1
-  lastFramingTime: 26902.08900561966
+  lastFramingTime: 8514.567897481658
   m_2DMode: 0
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.0006894469, y: -0.0045119673, z: -0.15822971}
+    m_Target: {x: 0, y: -0.0045119673, z: -0.15822971}
     speed: 2
-    m_Value: {x: 0.0006894469, y: -0.0045119673, z: -0.15822971}
+    m_Value: {x: 0, y: -0.0045119673, z: -0.15822971}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -436,21 +436,21 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
     yGrid:
-      m_Target: 0
+      m_Target: 1
       speed: 2
-      m_Value: 0
+      m_Value: 1
     zGrid:
       m_Target: 0
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.09180638, y: 0.28616405, z: -0.027556293, w: 0.9533764}
+    m_Target: {x: 0.47967094, y: 0.5192626, z: -0.4765197, w: 0.52269787}
     speed: 2
-    m_Value: {x: 0.091806196, y: 0.28616348, z: -0.027556237, w: 0.9533745}
+    m_Value: {x: 0.4796705, y: 0.51926214, z: -0.47651926, w: 0.5226974}
   m_Size:
-    m_Target: 46.837685
+    m_Target: 2.393705
     speed: 2
-    m_Value: 46.837685
+    m_Value: 2.393705
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -539,13 +539,13 @@ MonoBehaviour:
     serializedVersion: 2
     x: 1181
     y: 91
-    width: 200
+    width: 203
     height: 937
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: d2fbffff00000000
+    m_ExpandedIDs: 68a5ffffd2fbffff00000000b8260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -590,9 +590,9 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
-    x: 1385
+    x: 1388
     y: 91
-    width: 256
+    width: 253
     height: 937
   m_SearchFilter:
     m_NameFilter: 
@@ -605,35 +605,35 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets
+    - Assets/Prefabs
   m_ViewMode: 1
   m_StartGridSize: 49
   m_LastFolders:
-  - Assets
+  - Assets/Prefabs
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: D:\GitHub\UnityCenter\SpaceShooters
+  m_LastProjectPath: D:\GitHub\UnityLearningCenter\SpaceShooters
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: f2240000
-    m_LastClickedID: 9458
-    m_ExpandedIDs: 00000000f22400007825000000ca9a3bffffff7f
+    m_SelectedIDs: c0250000
+    m_LastClickedID: 9664
+    m_ExpandedIDs: 00000000f224000078250000c025000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: VFX
+      m_OriginalName: VFX
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 9592
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
+      m_ClientGUIView: {fileID: 12}
     m_SearchString: 
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
