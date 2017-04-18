@@ -22,7 +22,8 @@ public class PlayerController : MonoBehaviour {
 
     float moveHorizontal;
     float moveVertical;
-    float Speed = 7.0f;
+    float Speed = 7.0f;     // 이동 스피드
+    float tilt = 4.0f;      // 플레이어 기체 기울기
     public Rigidbody rd;
     public Vector3 movement;
     public Boundary boundary;
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void FixedUpdate()
-    {
+    {        
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
 
@@ -42,10 +43,12 @@ public class PlayerController : MonoBehaviour {
 
         rd.velocity =  movement * Speed;
         rd.position = new Vector3(
-        Mathf.Clamp(rd.position.x, boundary.Hmin, boundary.Hmax),
+        Mathf.Clamp(rd.position.x, boundary.Hmin, boundary.Hmax),           // Hmin _ Hmax 와 Vmin _ Vmax 이 바뀌었다... 
         0.0f,
-        Mathf.Clamp(rd.position.y, boundary.Vmin, boundary.Vmax)
+        Mathf.Clamp(rd.position.z, boundary.Vmin, boundary.Vmax)
         );
+
+        rd.rotation = Quaternion.Euler(0.0f, 0.0f, rd.velocity.x * -tilt);      // 좌우 이동간 기체 기울기 z축 조정.
         
     //Debug.Log(10);
 
