@@ -9,6 +9,7 @@ using UnityEngine;
 //    if (x > y) return x;
 //    else return y;
 //}
+
 [System.Serializable]                   // Boundary의 직렬화
 public class Boundary
 {
