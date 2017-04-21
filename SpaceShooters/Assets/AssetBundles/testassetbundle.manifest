@@ -1,0 +1,38 @@
+ManifestFileVersion: 0
+CRC: 2912086838
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: efe8b6c06c50a096e6075abc3016ec53
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e1c23fe08886f753838fb5bb91909706
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: a8afd24cc28edbd4ca0257dcf59ef38d, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/Bolt.prefab
+Dependencies: []
