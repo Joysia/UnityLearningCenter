@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 //template <class T>
@@ -29,16 +30,24 @@ public class PlayerController : MonoBehaviour {
     public Vector3 movement;
     public Boundary boundary;
 
+    // Shot
     public GameObject shot;
-    public Transform shotSpawn;
-
+    public Transform[] shotSpawn;
     public float fireRate;
     private float nextFire;
-    
+
+    // Sound
+    public AudioSource playerFireSounds;
+
+    // effect
+    public GameObject playerExplosion;
+    public GameController gameController;
+
     void start()
     {
         rd = this.GetComponent<Rigidbody>();
         //boundary = new Boundary();
+        playerFireSounds = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -46,9 +55,12 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButton("Fire1") && Time.time > nextFire)           // "Fire1" == Ctrl 키
         {
             nextFire = Time.time + fireRate;
-            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-        }
-        
+            for(int i = 0; i < shotSpawn.Length; i++)
+            {
+                Instantiate(shot, shotSpawn[i].position, shotSpawn[i].rotation);
+            }
+            playerFireSounds.Play();
+        }        
     }
 
     void FixedUpdate()
@@ -71,4 +83,14 @@ public class PlayerController : MonoBehaviour {
 
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("EnemyBolt"))
+        {           
+            Instantiate(playerExplosion, transform.position, transform.rotation);
+            Destroy(gameObject);
+            Destroy(other);
+            gameController.PlayerStats = Stats.Die;
+        }
+    }
 }
