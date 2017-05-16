@@ -12,11 +12,12 @@ public class WallContoroller : MonoBehaviour {
     private void OnCollisionEnter(Collision coll)       // 충돌체크
     {
         // Vector3 aaddd = transform.position - coll.transform.position;
-        firePos = coll.gameObject.GetComponent<BulletController>().firePos;
+       
         Vector3 relativePos = transform.position - firePos;
 
         if(coll.collider.tag == "Bullet")
         {
+            //firePos = coll.gameObject.GetComponent<BulletController>().firePos;
             //GameObject spark = Instantiate(sparkEffect, coll.transform.position, Quaternion.identity) as GameObject;
             GameObject spark = Instantiate(sparkEffect, coll.transform.position, Quaternion.LookRotation(relativePos)) as GameObject;
             Destroy(coll.gameObject);

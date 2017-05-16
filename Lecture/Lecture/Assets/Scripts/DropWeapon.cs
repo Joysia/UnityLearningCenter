@@ -8,7 +8,7 @@ public class DropWeapon : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("충돌");
+        //Debug.Log("총 픽업");
 
         if (other.gameObject.tag == "Player")
             ShotGun.SetActive(true);

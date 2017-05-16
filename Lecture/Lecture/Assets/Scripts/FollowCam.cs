@@ -5,7 +5,7 @@ using UnityEngine;
 public class FollowCam : MonoBehaviour {
 
     public Transform targetTr;
-    public float dist = 10.0f;          // 거리.
+    public float dist = 5f;          // 거리.
     public float height = 3.0f;
     public float dampTrace = 20.0f;     // 부드러운 추적을 위해 카메라의 회전에 딜레이를 주기 위한 값.
     private Transform tr;

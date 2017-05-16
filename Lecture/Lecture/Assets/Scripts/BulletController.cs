@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 생성되자마자 Bullet의 할일과 데미지등의 정보를 가지고 있음.
 public class BulletController : MonoBehaviour {
 
     public int damage = 20;
@@ -31,11 +32,15 @@ public class BulletController : MonoBehaviour {
         //GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * speed);        
 
         firePos = transform.position;
+
+
     }
 
 
     // Update is called once per frame
     void Update () {
+        
+
         //transform.Translate(Vector3.forward, Space.Self);
 	}
 }

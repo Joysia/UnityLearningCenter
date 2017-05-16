@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour {
     public float rotSpeed = 100.0f;
 
     // 마이 코드
-    public int PlayerHp = 100;
+    public int PlayerHp = 500;
+    public int bulletEnergy = 1000;
     //
 
     private Transform tr;
@@ -30,16 +31,22 @@ public class PlayerController : MonoBehaviour {
 
     public Transform ShotPoint;
 
-	// Use this for initialization
-	void Start () {
+
+    // 델리게이트 !!!!!!
+    public delegate void PlayerDieHandler();
+    public static event PlayerDieHandler DeleOnPlayerDie;
+
+
+    // Use this for initialization
+    void Start () {
         tr = GetComponent<Transform>();
         _animation = GetComponentInChildren<Animation>();
         _animation.clip = anim.idle;
         _animation.Play();
-    }   
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    void Update () {
+        
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
@@ -62,4 +69,28 @@ public class PlayerController : MonoBehaviour {
         //transform.Rotate(Vector3.up * rotSpeed * Input.GetAxis("Mouse X") * Time.deltaTime);
         
 	}
+
+    private void OnTriggerEnter(Collider coll)
+    {
+        if(coll.gameObject.tag == "MonsterHands")
+        {
+            PlayerHp -= 50;
+            Debug.Log("Player Hp = " + PlayerHp.ToString());
+            if(PlayerHp <= 0)
+            {
+                PlayerDie();
+            }
+        }
+    }
+
+    void PlayerDie()
+    {
+        DeleOnPlayerDie();          // Delegate 모아둔것 실행.
+        //Debug.Log("Player Die!!!");
+        //GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+        //foreach(GameObject monster in monsters)
+        //{
+        //    monster.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
+        //}
+    }
 }
