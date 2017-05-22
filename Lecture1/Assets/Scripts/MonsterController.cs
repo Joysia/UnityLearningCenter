@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
-public class MonsterController : MonoBehaviour {
-
+public class MonsterController : MonoBehaviour
+{
     public enum MonsterStats
     {
         IDLE,
@@ -16,8 +17,8 @@ public class MonsterController : MonoBehaviour {
         DIE
     };
 
-    GameObject Players;
-    PlayerController PC;
+    private GameObject Players;
+    private PlayerController PC;
 
     public MonsterStats monState = MonsterStats.IDLE;
     private Transform monsterTr;
@@ -31,25 +32,16 @@ public class MonsterController : MonoBehaviour {
     public GameObject bloodDecal;
     public GameObject LeftArm;
     public GameObject RightArm;
-    
+    private GameUI _gameUI;
+
     // Shield Test
     // public GameObject Shield; 필요없는듯
     public bool hasShield = false;
 
     public float monsterHp = 100.0f;
 
-    private void OnEnable()
+    private void Awake()
     {
-        PlayerController.DeleOnPlayerDie += this.OnPlayerDie;       // 메소드를 한꺼번에 모은다 !!!!        
-    }
-
-    private void OnDisable()
-    {
-        PlayerController.DeleOnPlayerDie -= this.OnPlayerDie;
-    }
-    
-
-    void Start() {
         // 캐시 처리
         monsterTr = GetComponent<Transform>();
         Players = GameObject.FindWithTag("Player");
@@ -57,12 +49,25 @@ public class MonsterController : MonoBehaviour {
         PC = Players.GetComponent<PlayerController>();
         nvAgent = GetComponent<NavMeshAgent>();
         monsterAnim = GetComponent<Animator>();
-        // 캐시 처리 끝             
-        StartCoroutine(CheckMonsterState());
-        StartCoroutine(MonsterAction());      
+        _gameUI = GameObject.FindGameObjectWithTag("GameUI").GetComponent<GameUI>();
+        // 캐시 처리 끝
+        //StartCoroutine(CheckMonsterState());   // Start에서 Awake로 변경하면서 사용할 수 없게 된다
+        //StartCoroutine(MonsterAction());
     }
 
-    IEnumerator MonsterAction()
+    private void OnEnable()
+    {
+        StartCoroutine(CheckMonsterState());
+        StartCoroutine(MonsterAction());
+        PlayerController.DeleOnPlayerDie += this.OnPlayerDie;       // 메소드를 한꺼번에 모은다 !!!!
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.DeleOnPlayerDie -= this.OnPlayerDie;
+    }
+
+    private IEnumerator MonsterAction()
     {
         while (!isDie)
         {
@@ -72,6 +77,7 @@ public class MonsterController : MonoBehaviour {
                     nvAgent.Stop();
                     monsterAnim.SetBool("IsTrace", false);
                     break;
+
                 case MonsterStats.TRACE:
                     nvAgent.destination = playerTr.position;
                     nvAgent.Resume();
@@ -80,29 +86,35 @@ public class MonsterController : MonoBehaviour {
                     LeftArm.GetComponent<TrailRenderer>().enabled = false;
                     RightArm.GetComponent<TrailRenderer>().enabled = false;
                     break;
+
                 case MonsterStats.WALK:
                     break;
+
                 case MonsterStats.ATTACK:
                     monsterAnim.SetBool("IsAttack", true);
                     LeftArm.GetComponent<TrailRenderer>().enabled = true;
                     RightArm.GetComponent<TrailRenderer>().enabled = true;
                     break;
-                case MonsterStats.FALL:                   
+
+                case MonsterStats.FALL:
                     break;
+
                 case MonsterStats.GOTHIT:
                     break;
+
                 case MonsterStats.DIE:
                     break;
+
                 default:
                     break;
             }
             yield return null;          //  한 프레임 쉬고~
-        }               
+        }
     }
 
     private void OnCollisionEnter(Collision coll)
     {
-        if(coll.collider.tag == "Bullet")
+        if (coll.collider.tag == "Bullet")
         {
             CreateBloodEffect(coll.transform.position);
             Destroy(coll.gameObject);
@@ -112,13 +124,20 @@ public class MonsterController : MonoBehaviour {
             if (monsterHp < 0)
                 MonsterDie();
 
-            if (hasShield)   // 뭔가 이상하네
+            if (hasShield)
             {
                 if (coll.gameObject.name == "ZaryaRightBullet(Clone)")
                 {
-                    Debug.Log(22);
+                    // Debug.Log(22);
                     // 플레이어에게 gauge값을 넘기자. 현재 실드 쓰고 충돌하는건... 실드...
-                    PC.gauge += coll.gameObject.GetComponent<ZaryaRightBullet>().damage / 2;
+
+                    PC.gaugeUp(coll.gameObject.GetComponent<ZaryaRightBullet>().damage / 2);
+
+                    if (PC.gauge > 100)                 // 이거때문에 ....ㅠ.ㅡ
+                    {
+                        PC.gauge = 100;
+                    }
+                    _gameUI.gagueText.text = PC.gauge.ToString();
                 }
             }
             else
@@ -127,17 +146,35 @@ public class MonsterController : MonoBehaviour {
                 {
                     monsterHp -= coll.gameObject.GetComponent<ZaryaRightBullet>().damage;
                 }
-            } 
-           
-                
-            
+            }
             //monsterHp -= coll.gameObject.GetComponent<BulletController>().damage;
         }
     }
 
+    private IEnumerator PushObjectPool()                // 다시 사용할 수 있도록 Pool 채우기
+    {
+        yield return new WaitForSeconds(3.0f);
+        isDie = false;
+        monsterHp = 100;
+        gameObject.tag = "Monster";
+        monState = MonsterStats.IDLE;
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        gameObject.GetComponentInChildren<CapsuleCollider>().enabled = true;
+        foreach (var coll in gameObject.GetComponentsInChildren<SphereCollider>())
+        {
+            coll.enabled = true;
+        }
+
+        gameObject.SetActive(false);
+    }
+
     private void MonsterDie()
     {
-        StopAllCoroutines();
+        gameObject.tag = "Untagged";
+
+        //StopAllCoroutines();
+        StopCoroutine(CheckMonsterState());
+        StopCoroutine(MonsterAction());
         isDie = true;
         monState = MonsterStats.DIE;
         nvAgent.Stop();
@@ -148,9 +185,11 @@ public class MonsterController : MonoBehaviour {
         {
             coll.enabled = false;
         }
+        _gameUI.DispScore(50);
+        StartCoroutine("PushObjectPool");
     }
-    
-    void CreateBloodEffect(Vector3 pos)
+
+    private void CreateBloodEffect(Vector3 pos)
     {
         GameObject blood1 = (GameObject)Instantiate(bloodEffect, pos, Quaternion.identity);
         Destroy(blood1, 1.0f);
@@ -166,22 +205,49 @@ public class MonsterController : MonoBehaviour {
     private IEnumerator CheckMonsterState()
     {
         while (!isDie)
-        {            
+        {
             yield return new WaitForSeconds(0.2f);
 
             float dist = Vector3.Distance(playerTr.position, monsterTr.position);
 
-            if (dist <= attackDist)    monState = MonsterStats.ATTACK;      //nvAgent.destination = playerTr.position;
+            if (dist <= attackDist) monState = MonsterStats.ATTACK;      //nvAgent.destination = playerTr.position;
             else if (dist < traceDist) monState = MonsterStats.TRACE;
-            else                       monState = MonsterStats.IDLE;
-        }     
+            else monState = MonsterStats.IDLE;
+        }
     }
 
-    void OnPlayerDie()
+    private void OnPlayerDie()
     {
         StopAllCoroutines();
         nvAgent.Stop();
         CancelInvoke();
         monsterAnim.SetTrigger("IsPlayerDie");
+    }
+
+    private void OnDamage(object[] _params)
+    {
+        //Debug.Log(string.Format("Hit ray {0} : {1}", _params[0], _params[1]));
+        CreateBloodEffect((Vector3)_params[0]);
+        monsterHp -= (int)_params[1];
+        if (monsterHp <= 0)
+        {
+            MonsterDie();
+        }
+        monsterAnim.SetTrigger("IsHit");
+    }
+
+    private float lastAttackTime;
+    private bool attacking = true;
+
+    private IEnumerator StartAttack()
+    {
+        if (Time.time - lastAttackTime > 1f)
+        {
+            lastAttackTime = Time.time;
+            while (attacking)
+            {
+                yield return new WaitForSeconds(1f);
+            }
+        }
     }
 }
